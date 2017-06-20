@@ -40,15 +40,12 @@
             this.soortDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.uitslagBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tcHoofd = new System.Windows.Forms.TabControl();
             this.Verkiezingsuitslagen = new System.Windows.Forms.TabPage();
             this.Partijen = new System.Windows.Forms.TabPage();
             this.btnVerwijderPartij = new System.Windows.Forms.Button();
             this.btnCoalitieVormen = new System.Windows.Forms.Button();
             this.DGVPartijen = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Stemmen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Coalities = new System.Windows.Forms.TabPage();
             this.DGVCoalities = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,10 +77,15 @@
             this.btnPartijToevoegen = new System.Windows.Forms.Button();
             this.uitslagBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.stemmenBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.partijBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.iDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.naamDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lijsttrekkerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Stemmen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MSMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVUitslagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uitslagBindingSource)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.tcHoofd.SuspendLayout();
             this.Verkiezingsuitslagen.SuspendLayout();
             this.Partijen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVPartijen)).BeginInit();
@@ -94,6 +96,7 @@
             this.Toevoegen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uitslagBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stemmenBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partijBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // MSMenu
@@ -147,6 +150,7 @@
             this.DGVUitslagen.Size = new System.Drawing.Size(740, 444);
             this.DGVUitslagen.TabIndex = 1;
             this.DGVUitslagen.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVUitslagen_CellValueChanged);
+            this.DGVUitslagen.DoubleClick += new System.EventHandler(this.DGVUitslagen_DoubleClick);
             this.DGVUitslagen.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DGVUitslagen_KeyDown);
             // 
             // iDDataGridViewTextBoxColumn
@@ -182,21 +186,21 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // tabControl1
+            // tcHoofd
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tcHoofd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.Verkiezingsuitslagen);
-            this.tabControl1.Controls.Add(this.Partijen);
-            this.tabControl1.Controls.Add(this.Coalities);
-            this.tabControl1.Controls.Add(this.GeselecteerdeUitslag);
-            this.tabControl1.Controls.Add(this.Toevoegen);
-            this.tabControl1.Location = new System.Drawing.Point(12, 27);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(760, 482);
-            this.tabControl1.TabIndex = 3;
+            this.tcHoofd.Controls.Add(this.Verkiezingsuitslagen);
+            this.tcHoofd.Controls.Add(this.Partijen);
+            this.tcHoofd.Controls.Add(this.Coalities);
+            this.tcHoofd.Controls.Add(this.GeselecteerdeUitslag);
+            this.tcHoofd.Controls.Add(this.Toevoegen);
+            this.tcHoofd.Location = new System.Drawing.Point(12, 27);
+            this.tcHoofd.Name = "tcHoofd";
+            this.tcHoofd.SelectedIndex = 0;
+            this.tcHoofd.Size = new System.Drawing.Size(760, 482);
+            this.tcHoofd.TabIndex = 3;
             // 
             // Verkiezingsuitslagen
             // 
@@ -246,37 +250,22 @@
             // 
             // DGVPartijen
             // 
+            this.DGVPartijen.AllowUserToAddRows = false;
             this.DGVPartijen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.DGVPartijen.AutoGenerateColumns = false;
             this.DGVPartijen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVPartijen.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
+            this.iDDataGridViewTextBoxColumn1,
+            this.naamDataGridViewTextBoxColumn1,
+            this.lijsttrekkerDataGridViewTextBoxColumn,
             this.Stemmen});
+            this.DGVPartijen.DataSource = this.partijBindingSource;
             this.DGVPartijen.Location = new System.Drawing.Point(6, 6);
             this.DGVPartijen.Name = "DGVPartijen";
             this.DGVPartijen.Size = new System.Drawing.Size(740, 415);
             this.DGVPartijen.TabIndex = 2;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.FillWeight = 200F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Naam";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.FillWeight = 200F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "Lijsttrekker";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.Width = 250;
-            // 
-            // Stemmen
-            // 
-            this.Stemmen.HeaderText = "Stemmen";
-            this.Stemmen.Name = "Stemmen";
             // 
             // Coalities
             // 
@@ -506,6 +495,7 @@
             this.LBAllePartijen.Name = "LBAllePartijen";
             this.LBAllePartijen.Size = new System.Drawing.Size(190, 316);
             this.LBAllePartijen.TabIndex = 7;
+            this.LBAllePartijen.SelectedIndexChanged += new System.EventHandler(this.LBAllePartijen_SelectedIndexChanged);
             // 
             // lblUitslagToevoegen
             // 
@@ -575,12 +565,39 @@
             this.stemmenBindingSource.DataMember = "Stemmen";
             this.stemmenBindingSource.DataSource = this.uitslagBindingSource1;
             // 
+            // partijBindingSource
+            // 
+            this.partijBindingSource.DataSource = typeof(LPProject.Models.Partij);
+            // 
+            // iDDataGridViewTextBoxColumn1
+            // 
+            this.iDDataGridViewTextBoxColumn1.DataPropertyName = "ID";
+            this.iDDataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn1.Name = "iDDataGridViewTextBoxColumn1";
+            // 
+            // naamDataGridViewTextBoxColumn1
+            // 
+            this.naamDataGridViewTextBoxColumn1.DataPropertyName = "Naam";
+            this.naamDataGridViewTextBoxColumn1.HeaderText = "Naam";
+            this.naamDataGridViewTextBoxColumn1.Name = "naamDataGridViewTextBoxColumn1";
+            // 
+            // lijsttrekkerDataGridViewTextBoxColumn
+            // 
+            this.lijsttrekkerDataGridViewTextBoxColumn.DataPropertyName = "Lijsttrekker";
+            this.lijsttrekkerDataGridViewTextBoxColumn.HeaderText = "Lijsttrekker";
+            this.lijsttrekkerDataGridViewTextBoxColumn.Name = "lijsttrekkerDataGridViewTextBoxColumn";
+            // 
+            // Stemmen
+            // 
+            this.Stemmen.HeaderText = "Stemmen";
+            this.Stemmen.Name = "Stemmen";
+            // 
             // LivePerformance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 521);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tcHoofd);
             this.Controls.Add(this.MSMenu);
             this.MainMenuStrip = this.MSMenu;
             this.MinimumSize = new System.Drawing.Size(800, 560);
@@ -590,7 +607,7 @@
             this.MSMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVUitslagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uitslagBindingSource)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.tcHoofd.ResumeLayout(false);
             this.Verkiezingsuitslagen.ResumeLayout(false);
             this.Partijen.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVPartijen)).EndInit();
@@ -603,6 +620,7 @@
             this.Toevoegen.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uitslagBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stemmenBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partijBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -614,7 +632,7 @@
         private System.Windows.Forms.ToolStripMenuItem verkiezingsuitslagenToolStripMenuItem;
         private System.Windows.Forms.DataGridView DGVUitslagen;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tcHoofd;
         private System.Windows.Forms.TabPage Verkiezingsuitslagen;
         private System.Windows.Forms.TabPage Partijen;
         private System.Windows.Forms.DataGridView DGVPartijen;
@@ -624,8 +642,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.ToolStripMenuItem fetchDatabaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exporteerCoalitieToolStripMenuItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.TabPage GeselecteerdeUitslag;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label lblNaam;
@@ -633,7 +649,6 @@
         private System.Windows.Forms.Label lblSoort;
         private System.Windows.Forms.Button btnVerwijderPartij;
         private System.Windows.Forms.Button btnCoalitieVormen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Stemmen;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.TabPage Toevoegen;
@@ -661,6 +676,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn soortDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource uitslagBindingSource1;
         private System.Windows.Forms.BindingSource stemmenBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn naamDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lijsttrekkerDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Stemmen;
+        private System.Windows.Forms.BindingSource partijBindingSource;
     }
 }
 

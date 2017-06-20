@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\LPProject"
+    "\\LPProject",
+    "\\LPProject\\Core",
+    "\\LPProject\\Models"
   ],
-  "SelectedNode": "\\LPProject.sln",
+  "SelectedNode": "\\LPProject\\LPProject.csproj",
   "PreviewInSolutionExplorer": false
 }

@@ -8,7 +8,7 @@ namespace LPProject.Core.Contexts
 {
     public interface IContext<T>
     {
-        void Create(T item);
+        void Create(T item, int id = 0);
 
         List<T> Read(int accountId = 0);
 

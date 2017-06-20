@@ -22,17 +22,24 @@ namespace LPProject.Core.Repositories
         }
         public void Add(Uitslag item)
         {
-            throw new NotImplementedException();
+            _context.Create(item);
         }
 
         public void Delete(Uitslag item)
         {
-            throw new NotImplementedException();
+            _context.Delete(item);
         }
 
         public List<Uitslag> GetAll(bool refresh = true, int id = 0)
         {
-            Uitslagen = _context.Read();
+            if (refresh == true)
+            {
+                Items = _context.Read();
+            }
+            else
+            {
+                Uitslagen = Items;
+            }
             return Uitslagen;
         }
 

@@ -1,4 +1,6 @@
-﻿using LPProject.Models;
+﻿using LPProject.Core.Connection;
+using LPProject.Core.Contexts;
+using LPProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,36 @@ namespace LPProject.Core.Repositories
 {
     public class CoalitieRepository : IRepository<Coalitie>
     {
+        public List<Coalitie> Coalitieen { get { return Items; } private set { Items = value; } }
+        public List<Coalitie> Items { get; private set; }
+        public Coalitie Coalitie = new Coalitie();
+        private readonly CoalitieContext _context;
+        public CoalitieRepository(IDatabaseConnector connector)
+        {
+            _context = new CoalitieContext(connector);
+            Coalitieen = new List<Coalitie>();
+        }
         public void Add(Coalitie item)
         {
-            throw new NotImplementedException();
+            _context.Create(item);
         }
 
         public void Delete(Coalitie item)
         {
-            throw new NotImplementedException();
+            _context.Delete(item);
         }
 
         public List<Coalitie> GetAll(bool refresh = true, int id = 0)
         {
-            throw new NotImplementedException();
+            if (refresh == true)
+            {
+                Items = _context.Read();
+            }
+            else
+            {
+                Coalitieen = Items;
+            }
+            return Coalitieen;
         }
 
         public Coalitie GetItem(int id)
@@ -31,7 +50,7 @@ namespace LPProject.Core.Repositories
 
         public void Update(Coalitie item)
         {
-            throw new NotImplementedException();
+            _context.Update(item);
         }
     }
 }

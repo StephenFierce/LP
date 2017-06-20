@@ -1,4 +1,6 @@
-﻿using LPProject.Models;
+﻿using LPProject.Core.Connection;
+using LPProject.Core.Contexts;
+using LPProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,36 @@ namespace LPProject.Core.Repositories
 {
     public class PartijRepository : IRepository<Partij>
     {
+        public List<Partij> Partijen { get { return Items; } private set { Items = value; } }
+        public List<Partij> Items { get; private set; }
+        public Partij Partij = new Partij();
+        private readonly PartijContext _context;
+        public PartijRepository(IDatabaseConnector connector)
+        {
+            _context = new PartijContext(connector);
+            Partijen = new List<Partij>();
+        }
         public void Add(Partij item)
         {
-            throw new NotImplementedException();
+            _context.Create(item);
         }
 
         public void Delete(Partij item)
         {
-            throw new NotImplementedException();
+            _context.Delete(item);
         }
 
         public List<Partij> GetAll(bool refresh = true, int id = 0)
         {
-            throw new NotImplementedException();
+            if (refresh == true)
+            {
+                Items = _context.Read();
+            }
+            else
+            {
+                Partijen = Items;
+            }
+            return Partijen;
         }
 
         public Partij GetItem(int id)
@@ -31,7 +50,7 @@ namespace LPProject.Core.Repositories
 
         public void Update(Partij item)
         {
-            throw new NotImplementedException();
+            _context.Update(item);
         }
     }
 }

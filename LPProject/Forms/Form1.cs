@@ -17,11 +17,17 @@ namespace LPProject
     public partial class LivePerformance : Form
     {
         private UitslagRepository _uitslagRepo;
+        private PartijRepository _partijRepo;
+        private CoalitieRepository _coalitieRepo;
+        public List<Partij> partijen = new List<Partij>();
         private IDatabaseConnector connector;
         public BindingList<Uitslag> blUitslag;
+        public BindingList<Coalitie> blCoalitie;
         public LivePerformance()
         {
             _uitslagRepo = new UitslagRepository(connector);
+            _partijRepo = new PartijRepository(connector);
+            _coalitieRepo = new CoalitieRepository(connector);
             InitializeComponent();
         }
 
@@ -32,8 +38,13 @@ namespace LPProject
 
         public void OphalenAlleData()
         {
-            
+            partijen = _partijRepo.GetAll();
             blUitslag = new BindingList<Uitslag>(_uitslagRepo.GetAll());
+            blCoalitie = new BindingList<Coalitie>(_coalitieRepo.GetAll());
+            foreach (Partij partij in partijen)
+            {
+                LBAllePartijen.Items.Add(partij);
+            }
             DGVUitslagen.DataSource = blUitslag;
         }
 
@@ -58,6 +69,24 @@ namespace LPProject
             }
        
        
+        }
+
+        private void LBAllePartijen_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DGVUitslagen_DoubleClick(object sender, EventArgs e)
+        {
+            if (DGVUitslagen.SelectedRows.Count == 1)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Selecteer een verkiezingsuitslag. Doe daarna een double click. Zo open je een uitslag.");
+            }
+            tcHoofd.SelectTab(2);
         }
     }
 }

@@ -20,12 +20,58 @@ namespace LPProject.Core.Contexts
         }
         public void Create(Uitslag item)
         {
-            throw new NotImplementedException();
+            Uitslag uitslag = item;
+            Uitslag nieuweuitslag = new Uitslag();
+            using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
+            {
+                string query = "INSERT INTO [dbo].[Uitslag] ([Datum], [Naam], [Soort_ID]) VALUES (@Datum, @Naam, @Soort)";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("Naam", uitslag.Naam);
+                    cmd.Parameters.AddWithValue("Soort", uitslag.Soort);
+                    cmd.Parameters.AddWithValue("Datum", uitslag.Datum);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    query = "SELECT TOP 1 * FROM [dbo].[Uitslag] Order by [Id] DESC";
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                nieuweuitslag.ID = reader.GetInt32(0);
+                            }
+                        }
+                    }
+                    query = "INSERT INTO [dbo].[Stemmen] ([Partij_ID], [Uitslag_ID], [AantalStemmen]) VALUES (@PartijID, @UitslagID, @AantalStemmen)";
+                    foreach (Stemmen stem in uitslag.Stemmen)
+                    {
+                        cmd.Parameters.AddWithValue("PartijID", stem.Partij.ID);
+                        cmd.Parameters.AddWithValue("UitslagID", nieuweuitslag.ID);
+                        cmd.Parameters.AddWithValue("AantalStemmen", stem.AantalStemmen);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                    }
+                    con.Close();
+                }
+            }
         }
 
         public void Delete(Uitslag item)
         {
-            throw new NotImplementedException();
+            Uitslag uitslag = item;
+            using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
+            {
+                string query = "UPDATE [dbo].[Uitslag] SET [Hidden] = 'True' WHERE ID = @ID; ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("ID", uitslag.ID);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
         }
 
         public Uitslag GetItem(int id)
@@ -70,8 +116,7 @@ namespace LPProject.Core.Contexts
 
         public void Update(Uitslag item)
         {
-            Uitslag uitslag = new Uitslag();
-            uitslag = item;
+            Uitslag uitslag = item;
             using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
             {
                 string query = "UPDATE [dbo].[Uitslag] SET [Naam] = @Naam, [Datum] = @Datum, [Soort_ID] = @Soort WHERE ID = @ID; ";

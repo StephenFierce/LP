@@ -10,7 +10,7 @@ namespace LPProject.Core.Repositories
     {
         void Add(T item);
 
-        List<T> GetAll(bool refresh = true, int accountId = 0);
+        List<T> GetAll(bool refresh = true, int id = 0);
 
         void Update(T item);
 

@@ -12,6 +12,7 @@ namespace LPProject.Core.Connection
     {
         public SqlConnection _connection;
         public static string ConnectionString = ConfigurationManager.AppSettings["ConnectionIris"];
+        private static readonly MSSQLConnector _instance;
         public static MSSQLConnector Instance
         {
             get
@@ -20,7 +21,7 @@ namespace LPProject.Core.Connection
             }
         }
 
-        private static readonly MSSQLConnector _instance;
+        
 
         static MSSQLConnector()
         {

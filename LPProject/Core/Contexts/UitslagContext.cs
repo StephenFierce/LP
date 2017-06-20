@@ -1,6 +1,9 @@
-﻿using LPProject.Models;
+﻿using LPProject.Core.Connection;
+using LPProject.Core.Enumerations;
+using LPProject.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +12,12 @@ namespace LPProject.Core.Contexts
 {
     public class UitslagContext : IContext<Uitslag>
     {
+        private readonly IDatabaseConnector _connector;
+
+        public UitslagContext(IDatabaseConnector connector)
+        {
+            _connector = connector;
+        }
         public void Create(Uitslag item)
         {
             throw new NotImplementedException();
@@ -26,12 +35,58 @@ namespace LPProject.Core.Contexts
 
         public List<Uitslag> Read(int accountId = 0)
         {
-            throw new NotImplementedException();
+            List<Uitslag> uitslagen = new List<Uitslag>();
+            // uitslag uitslag = null;
+            using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
+            {
+                string query = "SELECT * FROM [dbo].[Uitslag];";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Clear();
+                    //cmd.Parameters.AddWithValue("@id", someparm;)
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Uitslag uitslag = new Uitslag();
+
+                                uitslag.ID = reader.GetInt32(0);
+                                uitslag.Datum = reader.GetDateTime(1);
+                                uitslag.Naam = reader.GetString(2);
+                                uitslag.Soort = (Verkiezingssoort)reader.GetInt32(3);
+
+                                uitslagen.Add(uitslag);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return uitslagen;
         }
 
         public void Update(Uitslag item)
         {
-            throw new NotImplementedException();
+            Uitslag uitslag = new Uitslag();
+            uitslag = item;
+            using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
+            {
+                string query = "UPDATE [dbo].[Uitslag] SET [Naam] = @Naam, [Datum] = @Datum, [Soort_ID] = @Soort WHERE ID = @ID; ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("ID", uitslag.ID);
+                    cmd.Parameters.AddWithValue("Soort", Convert.ToInt32(uitslag.Soort));
+                    cmd.Parameters.AddWithValue("Naam", uitslag.Naam);
+                    cmd.Parameters.AddWithValue("Datum", uitslag.Datum);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
         }
     }
 }

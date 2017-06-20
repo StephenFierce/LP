@@ -11,7 +11,7 @@ namespace LPProject.Core.Connection
     public class MSSQLConnector
     {
         public SqlConnection _connection;
-        public static string ConnectionString = ConfigurationManager.AppSettings["ConnectionIris"];
+        public static string ConnectionString = ConfigurationManager.ConnectionStrings["ConnectionIris"].ConnectionString;
         private static readonly MSSQLConnector _instance;
         public static MSSQLConnector Instance
         {

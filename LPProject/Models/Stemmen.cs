@@ -8,8 +8,7 @@ namespace LPProject.Models
 {
     public class Stemmen
     {
-        public int PartijID { get; set; }
-        public int UitslagID { get; set; }
+        public Partij Partij { get; set; }
         public int AantalStemmen { get; set; }
 
     }

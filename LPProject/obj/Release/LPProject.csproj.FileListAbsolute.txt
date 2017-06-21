@@ -1,0 +1,9 @@
+C:\Users\steph\Source\Repos\LP\LPProject\bin\Release\LPProject.exe.config
+C:\Users\steph\Source\Repos\LP\LPProject\bin\Release\LPProject.exe
+C:\Users\steph\Source\Repos\LP\LPProject\bin\Release\LPProject.pdb
+C:\Users\steph\Source\Repos\LP\LPProject\obj\Release\LPProject.LivePerformance.resources
+C:\Users\steph\Source\Repos\LP\LPProject\obj\Release\LPProject.Properties.Resources.resources
+C:\Users\steph\Source\Repos\LP\LPProject\obj\Release\LPProject.csproj.GenerateResource.Cache
+C:\Users\steph\Source\Repos\LP\LPProject\obj\Release\LPProject.exe
+C:\Users\steph\Source\Repos\LP\LPProject\obj\Release\LPProject.pdb
+C:\Users\steph\Source\Repos\LP\LPProject\obj\Release\LPProject.csprojResolveAssemblyReference.cache

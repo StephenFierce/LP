@@ -13,9 +13,10 @@ namespace LPProject.Core.Contexts
     public class CoalitieContext : IContext<Coalitie>
     {
         private readonly IDatabaseConnector _connector;
-
+        private readonly UitslagContext _uitslagContext;
         public CoalitieContext(IDatabaseConnector connector)
         {
+            _uitslagContext = new UitslagContext(connector);
             _connector = connector;
         }
         public void Create(Coalitie item, int id = 0)
@@ -71,7 +72,7 @@ namespace LPProject.Core.Contexts
             List<Coalitie> coalities = new List<Coalitie>();
             using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
             {
-                string query = "SELECT * FROM [dbo].[Coalitie];";
+                string query = "SELECT C.Id, C.Uitslag_ID, P.Id, P.Naam, P.Lijsttrekker FROM [dbo].[Coalitie] C JOIN[dbo].[CoalitiePartij] CP ON CP.Coalitie_ID = C.Id JOIN[dbo].[Partij] P ON P.Id = CP.Partij_ID Where c.Id = 1;";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.Clear();
@@ -86,8 +87,17 @@ namespace LPProject.Core.Contexts
                                 Coalitie coalitie = new Coalitie();
 
                                 coalitie.ID = reader.GetInt32(0);
-                                coalitie.Naam = reader.GetString(1);
-                                coalitie.Lijsttrekker = reader.GetString(2);
+                                int uitslagID = reader.GetInt32(1);
+                                coalitie.Uitslag = _uitslagContext.Read(uitslagID)[0];
+                                query = "SELECT [Partij_ID] FROM [dbo].[CoalitiePartij] WHERE [Coalitie_ID] = @CoalitieID";
+                                cmd.Parameters.AddWithValue("CoalitieID", coalitie.ID);
+                                //foreach (Partij partij in)
+                                //{
+
+                                //    cmd.Parameters.AddWithValue("ID", coalitie.ID);
+                                //    cmd.Parameters.AddWithValue("PartijID", partij.ID);
+                                //    cmd.ExecuteNonQuery();
+                                //}
 
                                 coalities.Add(coalitie);
                             }
@@ -109,8 +119,6 @@ namespace LPProject.Core.Contexts
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("ID", coalitie.ID);
-                    cmd.Parameters.AddWithValue("Naam", coalitie.Naam);
-                    cmd.Parameters.AddWithValue("Lijsttrekker", coalitie.Lijsttrekker);
                     con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();

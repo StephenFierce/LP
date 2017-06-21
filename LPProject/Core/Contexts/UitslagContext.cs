@@ -18,7 +18,7 @@ namespace LPProject.Core.Contexts
         {
             _connector = connector;
         }
-        public void Create(Uitslag item)
+        public void Create(Uitslag item, int id = 0)
         {
             Uitslag uitslag = item;
             Uitslag nieuweuitslag = new Uitslag();
@@ -33,28 +33,38 @@ namespace LPProject.Core.Contexts
                     cmd.Parameters.AddWithValue("Datum", uitslag.Datum);
                     con.Open();
                     cmd.ExecuteNonQuery();
-                    query = "SELECT TOP 1 * FROM [dbo].[Uitslag] Order by [Id] DESC";
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+
+                    
+                    
+                    
+
+                }
+                query = "SELECT TOP 1 * FROM [dbo].[Uitslag] Order by [Id] DESC";
+                using (SqlCommand cmdThree = new SqlCommand(query, con))
+                {
+                    using (SqlDataReader reader = cmdThree.ExecuteReader())
                     {
-                        if (reader.HasRows)
+                        while (reader.Read())
                         {
-                            while (reader.Read())
-                            {
-                                nieuweuitslag.ID = reader.GetInt32(0);
-                            }
+                            nieuweuitslag.ID = reader.GetInt32(0);
                         }
                     }
-                    query = "INSERT INTO [dbo].[Stemmen] ([Partij_ID], [Uitslag_ID], [AantalStemmen]) VALUES (@PartijID, @UitslagID, @AantalStemmen)";
+                    cmdThree.Parameters.Clear();
+                }
+                query = "INSERT INTO [dbo].[Stemmen] ([Partij_ID], [Uitslag_ID], [AantalStemmen]) VALUES (@PartijID, @UitslagID, @AantalStemmen)";
+                using (SqlCommand cmdTwo = new SqlCommand(query, con))
+                {
                     foreach (Stemmen stem in uitslag.Stemmen)
                     {
-                        cmd.Parameters.AddWithValue("PartijID", stem.Partij.ID);
-                        cmd.Parameters.AddWithValue("UitslagID", nieuweuitslag.ID);
-                        cmd.Parameters.AddWithValue("AantalStemmen", stem.AantalStemmen);
-                        cmd.ExecuteNonQuery();
-                        cmd.Parameters.Clear();
+                        cmdTwo.Parameters.Clear();
+                        cmdTwo.Parameters.AddWithValue("PartijID", stem.Partij.ID);
+                        cmdTwo.Parameters.AddWithValue("UitslagID", nieuweuitslag.ID);
+                        cmdTwo.Parameters.AddWithValue("AantalStemmen", stem.AantalStemmen);
+                        cmdTwo.ExecuteNonQuery();
                     }
-                    con.Close();
+                    
                 }
+                con.Close();
             }
         }
 
@@ -79,16 +89,29 @@ namespace LPProject.Core.Contexts
             throw new NotImplementedException();
         }
 
-        public List<Uitslag> Read(int accountId = 0)
+        public List<Uitslag> Read(int id = 0)
         {
+            string query = "";
+            int ID = id;
             List<Uitslag> uitslagen = new List<Uitslag>();
             // uitslag uitslag = null;
             using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
             {
-                string query = "SELECT * FROM [dbo].[Uitslag];";
+                if (ID == 0)
+                {
+                    query = "SELECT * FROM [dbo].[Uitslag] WHERE [Hidden] IS NULL;";
+                }
+                else
+                {
+                    query = "SELECT * FROM [dbo].[Uitslag] WHERE [Hidden] IS NULL AND [ID] = @ID;";
+
+                }
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Parameters.Clear();
+                    if (ID != 0)
+                    {
+                        cmd.Parameters.AddWithValue("ID", ID);
+                    }
                     //cmd.Parameters.AddWithValue("@id", someparm;)
                     con.Open();
                     using (SqlDataReader reader = cmd.ExecuteReader())

@@ -18,7 +18,7 @@ namespace LPProject.Core.Contexts
         {
             _connector = connector;
         }
-        public void Create(Partij item)
+        public void Create(Partij item, int id = 0)
         {
             Partij partij = item;
             Partij nieuwePartij = new Partij();
@@ -87,7 +87,7 @@ namespace LPProject.Core.Contexts
                     }
                 }
             }
-
+            
             return partijen;
         }
 

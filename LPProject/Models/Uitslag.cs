@@ -15,5 +15,9 @@ namespace LPProject.Models
         public Verkiezingssoort Soort { get; set; }
         public List<Stemmen> Stemmen { get; set; }
 
+        public override string ToString()
+        {
+            return Naam;
+        }
     }
 }

@@ -11,5 +11,9 @@ namespace LPProject.Models
         public Partij Partij { get; set; }
         public int AantalStemmen { get; set; }
 
+        public override string ToString()
+        {
+            return Partij.Naam + ", " + AantalStemmen;
+        }
     }
 }

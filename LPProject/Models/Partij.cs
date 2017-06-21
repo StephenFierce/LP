@@ -12,6 +12,7 @@ namespace LPProject.Models
         public string Naam { get; set; }
         public string Lijsttrekker { get; set; }
 
+        public int Zetels { get; set; }
         public override string ToString()
         {
             return Naam + ", " + Lijsttrekker;

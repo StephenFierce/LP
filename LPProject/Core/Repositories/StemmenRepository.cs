@@ -43,7 +43,7 @@ namespace LPProject.Core.Repositories
 
         public void Update(Stemmen item)
         {
-            throw new NotImplementedException();
+            _context.Update(item);
         }
     }
 }

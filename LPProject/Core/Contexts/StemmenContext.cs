@@ -65,7 +65,7 @@ namespace LPProject.Core.Contexts
                             while (reader.Read())
                             {
                                 Stemmen stem = new Stemmen();
-
+                                stem.ID = reader.GetInt32(0);
                                 stem.AantalStemmen = reader.GetInt32(3);
                                 stem.Partij = _partijContext.Read(reader.GetInt32(1))[0];
 
@@ -81,7 +81,20 @@ namespace LPProject.Core.Contexts
 
         public void Update(Stemmen item)
         {
-            throw new NotImplementedException();
+            Stemmen stem = item;
+            using (SqlConnection con = new SqlConnection(MSSQLConnector.ConnectionString))
+            {
+                string query = "UPDATE [dbo].[Stemmen] SET [AantalStemmen] = @AantalStemmen WHERE ID = @ID; ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("ID", stem.ID);
+                    cmd.Parameters.AddWithValue("AantalStemmen", stem.AantalStemmen);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
         }
     }
 }

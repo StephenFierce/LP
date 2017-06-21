@@ -48,6 +48,12 @@ namespace LPProject.Core.Repositories
             throw new NotImplementedException();
         }
 
+        public Partij GetItem(string naam)
+        {
+            Partij = _context.GetItem(naam);
+            return Partij;
+        }
+
         public void Update(Partij item)
         {
             _context.Update(item);
